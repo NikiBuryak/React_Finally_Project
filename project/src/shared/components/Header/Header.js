@@ -44,10 +44,10 @@ export function Header() {
                         </Typography>
                         <Box>
                             {/*<NavLink to="/" exact>Home Page</NavLink>*/}
-                            <NavLink to="/about-us" exact>About</NavLink>
-                            <NavLink to="/delivery&price" exact>Delivery & Price</NavLink>
-                            <NavLink to="/catalog" exact>Catalog Page</NavLink>
-                            {/*<NavLink to="/" exact>Product</NavLink>*/}
+                            <Button color='inherit' to="/" exact component={NavLink}>Home Page</Button>
+                            <Button color='inherit' to="/about-us" exact component={NavLink}>About</Button>
+                            <Button color='inherit' to="/delivery&price" exact component={NavLink} >Delivery & Price</Button>
+                            <Button color='inherit' to="/catalog" exact component={NavLink} >Catalog Page</Button>
                         </Box>
                     </Toolbar>
                 </AppBar>

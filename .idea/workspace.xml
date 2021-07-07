@@ -1,7 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="69c06748-ea07-4427-9f19-376b082fef89" name="Default Changelist" comment="" />
+    <list default="true" id="69c06748-ea07-4427-9f19-376b082fef89" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/project/src/features/feature/api/ProductsAPI.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project/src/services/axios.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project/src/services/queryClient.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/project/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/project/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/project/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/src/AppContainer.js" beforeDir="false" afterPath="$PROJECT_DIR$/project/src/AppContainer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/src/config.js" beforeDir="false" afterPath="$PROJECT_DIR$/project/src/config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/src/features/feature/pages/CatalogPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/project/src/features/feature/pages/CatalogPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/src/features/feature/pages/ProductPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/project/src/features/feature/pages/ProductPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/src/shared/components/Header/Header.js" beforeDir="false" afterPath="$PROJECT_DIR$/project/src/shared/components/Header/Header.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -43,7 +56,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1625636849979</updated>
-      <workItem from="1625636851188" duration="5259000" />
+      <workItem from="1625636851188" duration="13770000" />
     </task>
     <servers />
   </component>
