@@ -2,7 +2,8 @@ import React from 'react';
 import {useQuery} from 'react-query'
 import {getCatalog} from "../api/ProductsAPI";
 import Box from "@material-ui/core/Box";
-import {Container, makeStyles, Typography} from "@material-ui/core";
+import {Button, Container, makeStyles, Typography} from "@material-ui/core";
+import {Link} from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     postContainer: {
@@ -39,6 +40,7 @@ export function CatalogPage() {
                                 <p>Price : {post.price}</p>
                                 <img src={post.photo}/>
                                 <Typography variant="h6" color='inherit'>Rating : {post.rating}</Typography>
+                                <Button variant="outlined" to={`/catalog/${post.id}`} exact component={Link}>Detailed {post.id}</Button>
                             </Container>
                         ))}
                     </div>

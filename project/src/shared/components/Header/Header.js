@@ -28,7 +28,6 @@ export function Header() {
     })
 
     const myStyles = useMyStyles();
-    console.log(myStyles)
 
     const classes = useStyles();
     return (
