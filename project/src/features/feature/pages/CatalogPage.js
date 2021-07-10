@@ -94,7 +94,7 @@ export function CatalogPage() {
 
                                         <CardActions>
                                             <Button size="small" color="primary" variant="outlined"
-                                                    to={`/catalog/${post.id}`} exact
+                                                    to={`/catalog/${post.id}`}
                                                     component={Link}>
                                                 Detailed
                                             </Button>

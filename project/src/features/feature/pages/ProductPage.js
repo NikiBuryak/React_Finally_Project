@@ -6,6 +6,8 @@ import {Link, NavLink} from "react-router-dom";
 import {useQuery} from "react-query";
 import {get, getCatalog} from "../api/ProductsAPI";
 import Badge from '@material-ui/core/Badge';
+import * as basketDuck from "../ducks/basket.duck";
+import {useDispatch, useSelector} from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
     productText: {
@@ -18,8 +20,12 @@ const theme = {
 
 
 export function ProductPage() {
+    const dispatch = useDispatch();
+    const items = useSelector(basketDuck.selectItems)
     const {id} = useParams();
     const classes = useStyles();
+
+
 
     const {data, error, isLoading} = useQuery('product', async () => {
         const {data} = await get(id)
@@ -35,6 +41,13 @@ export function ProductPage() {
         let newArr = arr.filter((el) => el.categories.includes(data.categories[0]) || el.categories.includes(data.categories[1]))
         return newArr;
     }
+    const handleBuyBtn = (id) =>{
+        console.log(id)
+        dispatch(basketDuck.addItem(id));
+        console.log(items)
+
+    }
+
 
     return (
         <Container>
@@ -62,7 +75,7 @@ export function ProductPage() {
                             <Typography className={classes.productText} variant="h6" color='inherit'>Rating
                                 : {data.rating}</Typography>
 
-                            <Button variant="outlined" disabled={!data.isInStock}>
+                            <Button variant="outlined" disabled={!data.isInStock} onClick={()=>handleBuyBtn(data && data.id)}>
                                 {data.isInStock ? 'Buy' : 'Out of stock'}
                             </Button>
                             <Button variant="outlined" to='/catalog/' exact component={Link}>Back</Button>
