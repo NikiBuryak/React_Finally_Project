@@ -41,7 +41,6 @@ export function setField(key, value) {
     }
 }
 
-// initial state
 const initialState = {
     items: [
         {id: null, value: 0},
@@ -57,8 +56,9 @@ export function reducer(state = initialState, action) {
         case ADD_ITEM:
             return produce(state, (s) => {
                 let item = s.items.find(el => el.id === id);
-                console.log(item, '----> item')
-                item ? item.value ++ :  s.items.push({id,value : 0})
+                console.log(item)
+                item ? item.value ++ :  s.items.push ({id,value : 1})
+
             });
 
         case UPDATE_ITEM:

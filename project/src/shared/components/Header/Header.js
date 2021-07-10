@@ -47,6 +47,7 @@ export function Header() {
                             <Button color='inherit' to="/about-us" exact component={NavLink}>About</Button>
                             <Button color='inherit' to="/delivery&price" exact component={NavLink} >Delivery & Price</Button>
                             <Button color='inherit' to="/catalog" exact component={NavLink} >Catalog Page</Button>
+                            <Button color='inherit' to="/catalog" exact component={NavLink} >Catalog Page</Button>
                         </Box>
                     </Toolbar>
                 </AppBar>

@@ -25,6 +25,8 @@ export function ProductPage() {
     const {id} = useParams();
     const classes = useStyles();
 
+    const currentProductVal = items.find(el => el.id === id)
+
 
 
     const {data, error, isLoading} = useQuery('product', async () => {
@@ -44,10 +46,12 @@ export function ProductPage() {
     const handleBuyBtn = (id) =>{
         console.log(id)
         dispatch(basketDuck.addItem(id));
-        console.log(items)
-
+        console.log(currentProductVal)
     }
 
+    const handleBtnLook = () =>{
+        console.log(currentProductVal)
+    }
 
     return (
         <Container>
@@ -78,7 +82,7 @@ export function ProductPage() {
                             <Button variant="outlined" disabled={!data.isInStock} onClick={()=>handleBuyBtn(data && data.id)}>
                                 {data.isInStock ? 'Buy' : 'Out of stock'}
                             </Button>
-                            <Button variant="outlined" to='/catalog/' exact component={Link}>Back</Button>
+                            <Button variant="outlined" to='/catalog/'  component={Link}>Back</Button>
                             <ul className={classes.productText}>Categories:
                                 {data.categories.map((category) => <li key={category}>{category}</li>)}
                             </ul>
