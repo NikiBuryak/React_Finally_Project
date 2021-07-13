@@ -3,6 +3,7 @@ import {featureConf} from "./config";
 import {AboutUsPage} from "./pages/AboutUsPage";
 import {CatalogPage} from "./pages/CatalogPage";
 import {ProductPage} from "./pages/ProductPage";
+import {StorePage} from "./pages/StorePage";
 import {DeliveryAndPricePage} from "./pages/DeliveryAndPricePage";
 import {HomePage} from "./pages/HomePage";
 
@@ -35,6 +36,12 @@ export const routes = [
         key: `${featureConf}/home`,
         path: '/delivery&price/',
         component: DeliveryAndPricePage,
+        exact: true,
+    },
+    {
+        key: `${featureConf}/home`,
+        path: '/cart',
+        component: StorePage,
         exact: true,
     },
 

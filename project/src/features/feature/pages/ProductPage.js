@@ -8,6 +8,9 @@ import {get, getCatalog} from "../api/ProductsAPI";
 import Badge from '@material-ui/core/Badge';
 import * as basketDuck from "../ducks/basket.duck";
 import {useDispatch, useSelector} from "react-redux";
+import IconButton from '@material-ui/core/IconButton';
+import {withStyles} from '@material-ui/core/styles';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 
 const useStyles = makeStyles((theme) => ({
     productText: {
@@ -17,6 +20,16 @@ const useStyles = makeStyles((theme) => ({
 const theme = {
     spacing: 10,
 }
+const StyledBadge = withStyles(theme => ({
+    badge: {
+        top: '50%',
+        right: -3,
+        // The border color match the background color.
+        border: `2px solid ${
+            theme.palette.type === 'light' ? theme.palette.grey[200] : theme.palette.grey[900]
+        }`,
+    },
+}))(Badge);
 
 
 export function ProductPage() {
@@ -24,9 +37,10 @@ export function ProductPage() {
     const items = useSelector(basketDuck.selectItems)
     const {id} = useParams();
     const classes = useStyles();
+    const [deleteNumb,setDeleteNumb] = useState(1)
 
-    const currentProductVal = items.find(el => el.id === id)
-
+    const currentProduct = items.find(el => el.id === id);
+    const currentProductVal = currentProduct && currentProduct.value;
 
 
     const {data, error, isLoading} = useQuery('product', async () => {
@@ -43,14 +57,18 @@ export function ProductPage() {
         let newArr = arr.filter((el) => el.categories.includes(data.categories[0]) || el.categories.includes(data.categories[1]))
         return newArr;
     }
-    const handleBuyBtn = (id) =>{
-        console.log(id)
-        dispatch(basketDuck.addItem(id));
-        console.log(currentProductVal)
+    const handleBuyBtn = (id, val) => {
+        let valNumb = +val;
+        dispatch(basketDuck.addItem(id, valNumb));
     }
 
-    const handleBtnLook = () =>{
-        console.log(currentProductVal)
+    const handleDeleteInput = ({target:{value}}) =>{
+        value = value.replace(/[^0-9]/g,"");
+        setDeleteNumb(value);
+    }
+    const deleteFromBasket = (id, price) =>{
+        dispatch(basketDuck.removeItem(id, {deleteNumb,price}));
+
     }
 
     return (
@@ -79,12 +97,30 @@ export function ProductPage() {
                             <Typography className={classes.productText} variant="h6" color='inherit'>Rating
                                 : {data.rating}</Typography>
 
-                            <Button variant="outlined" disabled={!data.isInStock} onClick={()=>handleBuyBtn(data && data.id)}>
+                            <Button variant="outlined" disabled={!data.isInStock}
+                                    onClick={() => handleBuyBtn(data && data.id , data.price)}>
                                 {data.isInStock ? 'Buy' : 'Out of stock'}
                             </Button>
-                            <Button variant="outlined" to='/catalog/'  component={Link}>Back</Button>
+                            <Button variant="outlined" to='/catalog/' component={Link}>Back</Button>
+
+                            {
+                                currentProductVal && <IconButton aria-label="cart">
+                                    <StyledBadge badgeContent={currentProductVal} color="primary">
+                                        <ShoppingCartIcon/>
+                                    </StyledBadge>
+                                </IconButton>
+                            }
+
+                            {currentProductVal && <Box>
+                                <input value={deleteNumb} onChange={handleDeleteInput}></input>
+                                <Button onClick={() =>deleteFromBasket(data.id, data.price)}>Delete</Button>
+                            </Box>
+
+                            }
+
+
                             <ul className={classes.productText}>Categories:
-                                {data.categories.map((category) => <li key={category}>{category}</li>)}
+                                {data.categories.map((category) =><li key={category}>{category}</li>)}
                             </ul>
                             <Typography>{data.description}</Typography>
                             <Box mt={5}>

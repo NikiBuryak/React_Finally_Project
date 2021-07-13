@@ -1,4 +1,4 @@
-import { produce } from "immer";
+import {produce} from "immer";
 
 // duck namespace
 export const namespace = "settings";
@@ -10,11 +10,11 @@ export const REMOVE_ITEM = `${namespace}/REMOVE_ITEM`;
 export const SET_FIELD = `${namespace}/SET_FIELD`;
 
 // action creators
-export function addItem(id) {
-    console.log(id)
+export function addItem(id, value) {
     return {
         type: ADD_ITEM,
         id,
+        value
     }
 }
 
@@ -26,10 +26,11 @@ export function updateItem(id, item) {
     }
 }
 
-export function removeItem(id) {
+export function removeItem(id, value) {
     return {
         type: REMOVE_ITEM,
         id,
+        value
     }
 }
 
@@ -43,22 +44,25 @@ export function setField(key, value) {
 
 const initialState = {
     items: [
-        {id: null, value: 0},
-        ],
-    summary: 0,
+        {id: null, value: null},
+    ],
+    summaryCosts: 0,
+    summaryVal: 0,
+
 };
+
 
 // reducer
 export function reducer(state = initialState, action) {
-    let { type, id, item, key, value } = action;
+    let {type, id, item, key, value} = action;
 
     switch (type) {
         case ADD_ITEM:
             return produce(state, (s) => {
                 let item = s.items.find(el => el.id === id);
-                console.log(item)
-                item ? item.value ++ :  s.items.push ({id,value : 1})
-
+                item ? item.value++ : s.items.push({id, value: 1});
+                s.summaryVal++;
+                s.summaryCosts += value;
             });
 
         case UPDATE_ITEM:
@@ -74,9 +78,17 @@ export function reducer(state = initialState, action) {
 
         case REMOVE_ITEM:
             return produce(state, (s) => {
-                let index = s.items.findIndex(el => el.id === id);
-                if (index > -1) {
-                    s.items.splice(index, 1);
+                let element = s.items.find(el => el.id === id);
+                let {deleteNumb, price} = value
+                if (element) {
+                    if (element.value > deleteNumb) {
+                        element.value = element.value - deleteNumb;
+                        s.summaryVal = s.summaryVal - deleteNumb;
+                        s.summaryCosts = -(deleteNumb * price)
+                    } else {
+                        s.items.splice(s.items.indexOf(id), 1);
+                        s.summaryVal = s.summaryVal - element.value;
+                    }
                 }
             });
 
@@ -90,6 +102,14 @@ export function reducer(state = initialState, action) {
     }
 }
 
+const getValues = () => {
+    let sum = 0;
+    for (let el in initialState) {
+        sum += el.value;
+    }
+    return sum
+}
 // selectors
 export const selectItems = state => state[namespace].items;
-export const selectIsOpened = state => state[namespace].isOpened;
+export const selectItemsValue = state => state[namespace].summaryVal;
+export const selectItemsCosts = state => state[namespace].summaryCosts;
