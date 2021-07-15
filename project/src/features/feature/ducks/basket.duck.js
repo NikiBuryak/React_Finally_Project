@@ -18,11 +18,11 @@ export function addItem(id, value) {
     }
 }
 
-export function updateItem(id, item) {
+export function updateItem(id, value) {
     return {
         type: UPDATE_ITEM,
         id,
-        item,
+        value,
     }
 }
 
@@ -67,13 +67,13 @@ export function reducer(state = initialState, action) {
 
         case UPDATE_ITEM:
             return produce(state, (s) => {
-                let index = s.items.findIndex(el => el.id === id);
-                if (index > -1) {
-                    s.items[index] = {
-                        ...s.items[index],
-                        ...item,
-                    };
-                }
+                let {price, newValue} = value
+                let item = s.items.find(el => el.id === id),
+                    newPrice = +price * [+newValue],
+                    oldPrice = +price * [+item.value];
+                s.summaryCosts = +s.summaryCosts - oldPrice + newPrice;
+                s.summaryVal = +s.summaryVal - item.value + newValue;
+                item.value = newValue;
             });
 
         case REMOVE_ITEM:

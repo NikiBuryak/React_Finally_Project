@@ -98,7 +98,7 @@ export function ProductPage() {
                                 : {data.rating}</Typography>
 
                             <Button variant="outlined" disabled={!data.isInStock}
-                                    onClick={() => handleBuyBtn(data && data.id , data.price)}>
+                                    onClick={() => handleBuyBtn(data && data.id, data.price)}>
                                 {data.isInStock ? 'Buy' : 'Out of stock'}
                             </Button>
                             <Button variant="outlined" to='/catalog/' component={Link}>Back</Button>
@@ -113,6 +113,7 @@ export function ProductPage() {
 
                             {currentProductVal && <Box>
                                 <input value={deleteNumb} onChange={handleDeleteInput}></input>
+
                                 <Button onClick={() =>deleteFromBasket(data.id, data.price)}>Delete</Button>
                             </Box>
 
