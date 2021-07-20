@@ -19,7 +19,7 @@ ducks.forEach(duck => {
 /**
  * Grab all sagas together
  */
-const sagas = ducks.map(d => d.sagas);
+// const sagas = ducks.map(d => d.sagas);
 
 /**
  * Creates the store
@@ -53,9 +53,9 @@ function createStore({ history }) {
   );
 
   // run sagas
-  sagaMiddleware.run(function* () {
-    yield all([...sagas.map(s => s())]);
-  });
+  // sagaMiddleware.run(function* () {
+  //   yield all([...sagas.map(s => s())]);
+  // });
 
   return store;
 }

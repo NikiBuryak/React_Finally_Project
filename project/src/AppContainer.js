@@ -4,7 +4,6 @@ import {Route, Switch} from "react-router-dom";
 import {ConnectedRouter} from "connected-react-router";
 import Box from "@material-ui/core/Box"
 import {Header} from "./shared/components/Header";
-
 import {routes} from "./routes";
 import {Page404} from "./shared/components/Page404";
 import {Container, makeStyles} from "@material-ui/core";
@@ -18,24 +17,17 @@ export function AppContainer(props) {
         <ConnectedRouter history={history}>
             <Header/>
             <Container>
-                {/*<Route path="/" exact component={HomePage}/>*/}
-                {/*<Route path="/about-us/" exact component={AboutUsPage}/>*/}
-                {/*<Route path="/catalog/" exact component={CatalogPage}/>*/}
-                {/*<Route path="/catalog/:id" exact component={ProductPage}/>*/}
-                {/*<Route path="/delivery&price/" exact component={DeliveryAndPricePage}/>*/}
-
-
                 {/*<div className="ws">*/}
                 {/*  <div className="ws__cont">*/}
 
-                    {/*<div className="ws__content">*/}
-                      <Switch>
-                        {routes.map(route => (
-                          <Route key={route.key} path={route.path} exact={route.exact} component={route.component} />
-                        ))}
-                        <Route path="*" exact render={() => <Page404 />} />
-                      </Switch>
-                    {/*</div>*/}
+                {/*<div className="ws__content">*/}
+                <Switch>
+                    {routes.map(route => (
+                        <Route key={route.key} path={route.path} exact={route.exact} component={route.component}/>
+                    ))}
+                    <Route path="*" exact render={() => <Page404/>}/>
+                </Switch>
+                {/*</div>*/}
 
                 {/*    <div className="ws__header">*/}
 
