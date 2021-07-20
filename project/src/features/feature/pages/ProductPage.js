@@ -4,7 +4,7 @@ import {useParams} from "react-router";
 import {Button, Container, makeStyles, Typography} from "@material-ui/core";
 import {Link, NavLink} from "react-router-dom";
 import {useQuery} from "react-query";
-import {get, getCatalog} from "../api/ProductsAPI";
+import {get, getCatalog, getCategories} from "../api/ProductsAPI";
 import Badge from '@material-ui/core/Badge';
 import * as basketDuck from "../ducks/basket.duck";
 import {useDispatch, useSelector} from "react-redux";
@@ -37,7 +37,7 @@ export function ProductPage() {
     const items = useSelector(basketDuck.selectItems)
     const {id} = useParams();
     const classes = useStyles();
-    const [deleteNumb,setDeleteNumb] = useState(1)
+    const [deleteNumb, setDeleteNumb] = useState(1)
 
     const currentProduct = items.find(el => el.id === id);
     const currentProductVal = currentProduct && currentProduct.value;
@@ -45,6 +45,10 @@ export function ProductPage() {
 
     const {data, error, isLoading} = useQuery('product', async () => {
         const {data} = await get(id)
+        return data;
+    });
+    const categories = useQuery('categories', async () => {
+        const {data} = await getCategories(id)
         return data;
     });
 
@@ -62,14 +66,23 @@ export function ProductPage() {
         dispatch(basketDuck.addItem(id, valNumb));
     }
 
-    const handleDeleteInput = ({target:{value}}) =>{
-        value = value.replace(/[^0-9]/g,"");
+    const handleDeleteInput = ({target: {value}}) => {
+        value = value.replace(/[^0-9]/g, "");
         setDeleteNumb(value);
     }
-    const deleteFromBasket = (id, price) =>{
-        dispatch(basketDuck.removeItem(id, {deleteNumb,price}));
+    const deleteFromBasket = (id, price) => {
+        dispatch(basketDuck.removeItem(id, {deleteNumb, price}));
 
     }
+
+    const myCategories = (cat) => {
+        const {data} = categories;
+        const catsName = data && data.filter((el) => {
+            return cat.includes(el.id) && el.name;
+        })
+        return catsName;
+    }
+
 
     return (
         <Container>
@@ -114,14 +127,12 @@ export function ProductPage() {
                             {currentProductVal && <Box>
                                 <input value={deleteNumb} onChange={handleDeleteInput}></input>
 
-                                <Button onClick={() =>deleteFromBasket(data.id, data.price)}>Delete</Button>
+                                <Button onClick={() => deleteFromBasket(data.id, data.price)}>Delete</Button>
                             </Box>
-
                             }
 
-
                             <ul className={classes.productText}>Categories:
-                                {data.categories.map((category) =><li key={category}>{category}</li>)}
+                                {myCategories(data.categories).map((el) => <li key={el.id}>{el.name}</li>)}
                             </ul>
                             <Typography>{data.description}</Typography>
                             <Box mt={5}>

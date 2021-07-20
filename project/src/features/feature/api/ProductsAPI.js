@@ -3,6 +3,9 @@ import { axiosInstance } from "../../../services/axios";
 export function getCatalog() {
     return axiosInstance.get('/products');
 }
+export function getCategories() {
+    return axiosInstance.get('/category');
+}
 
 export function get(id) {
     return axiosInstance.get(`/products/${id}`);
