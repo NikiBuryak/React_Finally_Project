@@ -84,7 +84,7 @@ export function reducer(state = initialState, action) {
                     if (element.value > deleteNumb) {
                         element.value = element.value - deleteNumb;
                         s.summaryVal = s.summaryVal - deleteNumb;
-                        s.summaryCosts = -(deleteNumb * price)
+                        s.summaryCosts -= (deleteNumb * price)
                     } else {
                         s.items.splice(s.items.indexOf(id), 1);
                         s.summaryVal = s.summaryVal - element.value;
