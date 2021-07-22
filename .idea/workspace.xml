@@ -3,8 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="69c06748-ea07-4427-9f19-376b082fef89" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/src/AppContainer.js" beforeDir="false" afterPath="$PROJECT_DIR$/project/src/AppContainer.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project/src/features/feature/ducks/basket.duck.js" beforeDir="false" afterPath="$PROJECT_DIR$/project/src/features/feature/ducks/basket.duck.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/src/features/feature/pages/CatalogPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/project/src/features/feature/pages/CatalogPage.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project/src/features/feature/pages/ProductPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/project/src/features/feature/pages/ProductPage.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project/src/features/feature/pages/StorePage.js" beforeDir="false" afterPath="$PROJECT_DIR$/project/src/features/feature/pages/StorePage.js" afterDir="false" />
     </list>
@@ -18,6 +18,14 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
   </component>
   <component name="ProjectId" id="1uyTV8RCdiB8eMJFajrPE3xhYrh" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -54,6 +62,7 @@
       <workItem from="1625821032433" duration="636000" />
       <workItem from="1625839976202" duration="4000" />
       <workItem from="1626786663883" duration="54000" />
+      <workItem from="1626933863265" duration="4976000" />
     </task>
     <servers />
   </component>

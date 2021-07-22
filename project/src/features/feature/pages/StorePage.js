@@ -10,7 +10,7 @@ import {Button, Container, Typography} from "@material-ui/core";
 
 export function StorePage() {
     const dispatch = useDispatch();
-    const [basketlist, setBasketList] = useState([]);
+    const [basketList, setBasketList] = useState([]);
     const [itemValues, setItemValues] = useState([]);
 
     let amountRef = useRef(null);
@@ -18,6 +18,7 @@ export function StorePage() {
 
     let items = useSelector(basketDuck.selectItems);
     items = items.filter((item) => !!item.id);
+
 
 
     let summaryValue = useSelector(basketDuck.selectItemsValue);
@@ -30,7 +31,7 @@ export function StorePage() {
     });
 
     useEffect(() => {
-        setBasketList(data && data.filter(({id}) => items.find(el => el.id === id)));
+        summaryValue && setBasketList(data && data.filter(({id}) => items.find(el => el.id === id)));
         setItemValues(items);
     }, []);
 
@@ -48,6 +49,7 @@ export function StorePage() {
             newList = newList.filter( el=> el.id !== myItem.id);
             setBasketList(newList);
         }
+        price = +price;
         dispatch(basketDuck.removeItem(id, {deleteNumb, price}));
     }
 
@@ -64,16 +66,26 @@ export function StorePage() {
 
     const findMyValue = (id) => {
         const value = items && items.find(el => el.id === id).value
-        return value
+        return value;
     }
     const handleSubmitClick = () => {
         console.log(items,"submit")
+        console.log(summaryValue,"summaryValue");
+        console.log(summaryCosts,"summaryCosts");
+
     }
+    console.log(items,"items");
+    console.log(summaryValue, 'summaryValue');
+    console.log(basketList, 'basketList');
+    console.log(data,"data");
+    // console.log(id,"id");
+
+
     return (
         <Box display={"flex"} flexWrap={'wrap'} justifyContent={"space-evenly"}>
             {isLoading ? <div>Loading...</div> :
                 error ? <div>Error : {error}</div> :
-                    basketlist && basketlist.length > 0 ? basketlist.map((data) => (
+                    basketList ? basketList.map((data) => (
 
                             <Box maxWidth={'400px'} key={data.id} border={"2px solid #66bb6a87"}>
                                 <img width='100%' src={data.photo}/>
@@ -101,7 +113,7 @@ export function StorePage() {
                         )
                         : <div>Empty basket</div>
             }
-            {basketlist && basketlist.length > 0 &&
+            {basketList && basketList.length > 0 &&
             <Box mt={10} display='flex' width="100vw" flexDirection="column" alignItems="center">
                 <Typography variant="h6">Summary : {summaryValue} items</Typography>
                 <Typography variant="h6">Summary price : {summaryCosts} Rubik</Typography>

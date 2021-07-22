@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useQuery} from 'react-query'
 import {getCatalog} from "../api/ProductsAPI";
 import Box from "@material-ui/core/Box";
@@ -104,7 +104,6 @@ export function CatalogPage() {
     };
     const handleChangeStock = () => {
         setIsStockVal(!isStockVal);
-        console.log(list[0])
         const newList = list.filter((el) =>{
             return el.isInStock === isStockVal;
         })

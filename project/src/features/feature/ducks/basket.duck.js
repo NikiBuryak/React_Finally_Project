@@ -79,15 +79,16 @@ export function reducer(state = initialState, action) {
         case REMOVE_ITEM:
             return produce(state, (s) => {
                 let element = s.items.find(el => el.id === id);
-                let {deleteNumb, price} = value
+                let {deleteNumb, price} = value;
                 if (element) {
                     if (element.value > deleteNumb) {
-                        element.value = element.value - deleteNumb;
-                        s.summaryVal = s.summaryVal - deleteNumb;
-                        s.summaryCosts -= (deleteNumb * price)
+                        element.value = + element.value - deleteNumb;
+                        s.summaryVal = +s.summaryVal - deleteNumb;
+                        s.summaryCosts = +s.summaryCosts - [price * deleteNumb];
                     } else {
                         s.items.splice(s.items.indexOf(id), 1);
-                        s.summaryVal = s.summaryVal - element.value;
+                        s.summaryVal = +s.summaryVal - element.value;
+                        s.summaryCosts = +s.summaryCosts - [element.value * price];
                     }
                 }
             });
