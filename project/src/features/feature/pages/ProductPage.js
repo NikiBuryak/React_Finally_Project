@@ -87,7 +87,6 @@ export function ProductPage() {
         }
     }
 
-    console.dir(error)
     return (
         <Box>
             <Box>
@@ -136,7 +135,7 @@ export function ProductPage() {
                         }
 
                         <ul className={classes.productText}>Categories:
-                            {product && categoryList &&myCategories(product.categories).map((el) => <li key={el.id}>{el.name}</li>)}
+                            {product && categoryList && myCategories(product.categories).map((el) => <li key={el.id}>{el.name}</li>)}
                         </ul>
 
                         <Typography>{product.description}</Typography>

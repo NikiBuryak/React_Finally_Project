@@ -70,15 +70,8 @@ export function StorePage() {
     }
     const handleSubmitClick = () => {
         console.log(items,"submit")
-        console.log(summaryValue,"summaryValue");
-        console.log(summaryCosts,"summaryCosts");
 
-    }
-    console.log(items,"items");
-    console.log(summaryValue, 'summaryValue');
-    console.log(basketList, 'basketList');
-    console.log(data,"data");
-    // console.log(id,"id");
+    };
 
 
     return (
@@ -86,7 +79,6 @@ export function StorePage() {
             {isLoading ? <div>Loading...</div> :
                 error ? <div>Error : {error}</div> :
                     basketList ? basketList.map((data) => (
-
                             <Box maxWidth={'400px'} key={data.id} border={"2px solid #66bb6a87"}>
                                 <img width='100%' src={data.photo}/>
                                 <Typography className={data.productText} variant="h6">{data.title}</Typography>
