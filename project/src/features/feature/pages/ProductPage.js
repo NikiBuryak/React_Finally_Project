@@ -37,7 +37,9 @@ export function ProductPage() {
     const items = useSelector(basketDuck.selectItems)
     const {id} = useParams();
     const classes = useStyles();
-    const [deleteNumb, setDeleteNumb] = useState(1)
+    const [product, setProduct] = useState(null);
+    const [deleteNumb, setDeleteNumb] = useState(1);
+    const [categoryList, setCategoryList] = useState(null);
 
     const currentProduct = items.find(el => el.id === id);
     const currentProductVal = currentProduct && currentProduct.value;
@@ -45,11 +47,13 @@ export function ProductPage() {
 
     const {data, error, isLoading} = useQuery('product', async () => {
         const {data} = await get(id)
+        data ? setProduct(data) : setProduct(null);
         return data;
     });
     const categories = useQuery('categories', async () => {
         const {data} = await getCategories(id)
-        return data;
+        data && setCategoryList(data);
+        return data && data;
     });
 
     const list = useQuery('productsList', async () => {
@@ -72,84 +76,85 @@ export function ProductPage() {
     }
     const deleteFromBasket = (id, price) => {
         dispatch(basketDuck.removeItem(id, {deleteNumb, price}));
-
     }
 
     const myCategories = (cat) => {
-        const {data} = categories;
-        const catsName = data && data.filter((el) => {
-            return cat.includes(el.id) && el.name;
-        })
-        return catsName;
+        if (product && categoryList) {
+            const catsName = categoryList.filter((el) => {
+                return cat.includes(el.id) && el.name;
+            })
+            return catsName;
+        }
     }
 
-
     return (
-        <Container>
+        <Box>
             <Box>
                 {isLoading ? <div>Loading...</div>
-                    : error ? <div>Error: {error}</div>
-                        : <Container>
-                            <Typography className={classes.productText} variant="h3">{data.title}</Typography>
-                            <img src={data.photo}/>
-                            <Box display="flex">
-                                {data.isInStock &&
-                                <Badge color="error" variant="dot">
-                                    <Typography variant="h6" mr={2} color="inherit">IN STOCK!!!</Typography>
-                                </Badge>}
-                                {data.isNew &&
-                                <Badge color="error" variant="dot">
-                                    <Typography variant="h6" color="inherit">NEW!!!</Typography>
-                                </Badge>}
-                                {data.isSale &&
-                                <Badge color="error" variant="dot">
-                                    <Typography variant="h6" color="inherit">ON SALE!!!</Typography>
-                                </Badge>}
-                            </Box>
-                            <p>Price : {data.price}</p>
-                            <Typography className={classes.productText} variant="h6" color='inherit'>Rating
-                                : {data.rating}</Typography>
+                    : error ? <div>Error: {error.message}</div>
+                        : product ? <Box>
+                        <Typography className={classes.productText} variant="h3">{product.title}</Typography>
+                        <img src={product.photo}/>
+                        <Box display="flex">
+                            {product.isInStock &&
+                            <Badge color="error" variant="dot">
+                                <Typography variant="h6" mr={2} color="inherit">IN STOCK!!!</Typography>
+                            </Badge>}
+                            {product.isNew &&
+                            <Badge color="error" variant="dot">
+                                <Typography variant="h6" color="inherit">NEW!!!</Typography>
+                            </Badge>}
+                            {product.isSale &&
+                            <Badge color="error" variant="dot">
+                                <Typography variant="h6" color="inherit">ON SALE!!!</Typography>
+                            </Badge>}
+                        </Box>
+                        <p>Price : {product.price}</p>
+                        <Typography className={classes.productText} variant="h6" color='inherit'>Rating
+                            : {product.rating}</Typography>
 
-                            <Button variant="outlined" disabled={!data.isInStock}
-                                    onClick={() => handleBuyBtn(data && data.id, data.price)}>
-                                {data.isInStock ? 'Buy' : 'Out of stock'}
-                            </Button>
-                            <Button variant="outlined" to='/catalog/' component={Link}>Back</Button>
+                        <Button variant="outlined" disabled={!product.isInStock}
+                                onClick={() => handleBuyBtn(product && product.id, product.price)}>
+                            {product.isInStock ? 'Buy' : 'Out of stock'}
+                        </Button>
+                        <Button variant="outlined" to='/catalog/' component={Link}>Back</Button>
 
-                            {
-                                currentProductVal && <IconButton aria-label="cart">
-                                    <StyledBadge badgeContent={currentProductVal} color="primary">
-                                        <ShoppingCartIcon/>
-                                    </StyledBadge>
-                                </IconButton>
-                            }
+                        {
+                            currentProductVal && <IconButton aria-label="cart">
+                                <StyledBadge badgeContent={currentProductVal} color="primary">
+                                    <ShoppingCartIcon/>
+                                </StyledBadge>
+                            </IconButton>
+                        }
 
-                            {currentProductVal && <Box>
-                                <input value={deleteNumb} onChange={handleDeleteInput}></input>
+                        {currentProductVal && <Box>
+                            <input value={deleteNumb} onChange={handleDeleteInput}></input>
 
-                                <Button onClick={() => deleteFromBasket(data.id, data.price)}>Delete</Button>
-                            </Box>
-                            }
+                            <Button onClick={() => deleteFromBasket(product.id, product.price)}>Delete</Button>
+                        </Box>
+                        }
 
-                            <ul className={classes.productText}>Categories:
-                                {myCategories(data.categories).map((el) => <li key={el.id}>{el.name}</li>)}
-                            </ul>
-                            <Typography>{data.description}</Typography>
-                            <Box mt={5}>
-                                <Typography variant="h5">Similar products</Typography>
-                                {list.isLoading ? <div>Loading some products...</div>
-                                    : list.error ? <div>Error loading : {list.error}</div>
-                                        : findList(list.data).slice(2, 6).map((el) => (
-                                            <div key={el.id}>
-                                                {el.title}
-                                                <p>{el.price}</p>
-                                            </div>
-                                        ))}
-                            </Box>
-                        </Container>}
+                        <ul className={classes.productText}>Categories:
+                            {product && categoryList && myCategories(product.categories).map((el) => <li key={el.id}>{el.name}</li>)}
+                        </ul>
+
+                        <Typography>{product.description}</Typography>
+                        <Box mt={5}>
+                            <Typography variant="h5">Similar products</Typography>
+                            {list.isLoading ? <div>Loading some products...</div>
+                                : list.error ? <div>Error loading : {list.error}</div>
+                                    : findList(list.data).slice(2, 6).map((el) => (
+                                        <div key={el.id}>
+                                            {el.title}
+                                            <p>{el.price}</p>
+                                        </div>
+                                    ))}
+                        </Box>
+                    </Box>
+                : <div>No data found</div>}
 
             </Box>
-        </Container>
+        </Box>
 
 
     )

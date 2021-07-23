@@ -10,7 +10,7 @@ import {Button, Container, Typography} from "@material-ui/core";
 
 export function StorePage() {
     const dispatch = useDispatch();
-    const [basketlist, setBasketList] = useState([]);
+    const [basketList, setBasketList] = useState([]);
     const [itemValues, setItemValues] = useState([]);
 
     let amountRef = useRef(null);
@@ -19,9 +19,10 @@ export function StorePage() {
     let items = useSelector(basketDuck.selectItems);
     items = items.filter((item) => !!item.id);
 
+
+
     let summaryValue = useSelector(basketDuck.selectItemsValue);
     let summaryCosts = useSelector(basketDuck.selectItemsCosts);
-
 
 
     const {data, error, isLoading} = useQuery('cataloglist', async () => {
@@ -30,7 +31,7 @@ export function StorePage() {
     });
 
     useEffect(() => {
-        setBasketList(data && data.filter(({id}) => items.find(el => el.id === id)));
+        summaryValue && setBasketList(data && data.filter(({id}) => items.find(el => el.id === id)));
         setItemValues(items);
     }, []);
 
@@ -42,6 +43,13 @@ export function StorePage() {
             deleteNumb = 1;
         }
         setItemValues([...items]);
+        const myItem = itemValues.find(el=> el.id === id);
+        let newList = [...itemValues];
+        if(myItem.value === 1){
+            newList = newList.filter( el=> el.id !== myItem.id);
+            setBasketList(newList);
+        }
+        price = +price;
         dispatch(basketDuck.removeItem(id, {deleteNumb, price}));
     }
 
@@ -57,20 +65,22 @@ export function StorePage() {
     }
 
     const findMyValue = (id) => {
-        return items && items.find(el => el.id === id).value
+        const value = items && items.find(el => el.id === id).value
+        return value;
+    }
+    const handleSubmitClick = () => {
+        console.log(items,"submit")
 
-    }
-    const handleSubmitClick = ()=>{
-        console.log("submit")
-    }
+    };
+
+
     return (
         <Box display={"flex"} flexWrap={'wrap'} justifyContent={"space-evenly"}>
             {isLoading ? <div>Loading...</div> :
                 error ? <div>Error : {error}</div> :
-                    basketlist && basketlist.length > 0 ? basketlist.map((data) => (
-
-                            <Box maxWidth={'400px'} key={data.id}  border={"2px solid #66bb6a87"} >
-                                <img width= '100%' src={data.photo}/>
+                    basketList ? basketList.map((data) => (
+                            <Box maxWidth={'400px'} key={data.id} border={"2px solid #66bb6a87"}>
+                                <img width='100%' src={data.photo}/>
                                 <Typography className={data.productText} variant="h6">{data.title}</Typography>
                                 <p>Price : {data.price}</p>
                                 <p>Amount : {findMyValue(data.id)}</p>
@@ -92,11 +102,11 @@ export function StorePage() {
 
                             </Box>
                         )
-
                         )
                         : <div>Empty basket</div>
             }
-            {basketlist && basketlist.length > 0 && <Box mt={10} display='flex' width="100vw" flexDirection="column" alignItems="center">
+            {basketList && basketList.length > 0 &&
+            <Box mt={10} display='flex' width="100vw" flexDirection="column" alignItems="center">
                 <Typography variant="h6">Summary : {summaryValue} items</Typography>
                 <Typography variant="h6">Summary price : {summaryCosts} Rubik</Typography>
                 <Button variant={"outlined"} onClick={handleSubmitClick}>Submit</Button>
