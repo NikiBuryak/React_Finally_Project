@@ -17,28 +17,12 @@ export function AppContainer(props) {
         <ConnectedRouter history={history}>
             <Header/>
             <Container>
-                {/*<div className="ws">*/}
-                {/*  <div className="ws__cont">*/}
-
-                {/*<div className="ws__content">*/}
                 <Switch>
                     {routes.map(route => (
                         <Route key={route.key} path={route.path} exact={route.exact} component={route.component}/>
                     ))}
                     <Route path="*" exact render={() => <Page404/>}/>
                 </Switch>
-                {/*</div>*/}
-
-                {/*    <div className="ws__header">*/}
-
-                {/*    </div>*/}
-
-                {/*    <div className="ws__footer">*/}
-
-                {/*    </div>*/}
-
-                {/*  </div>*/}
-                {/*</div>*/}
             </Container>
         </ConnectedRouter>
     );

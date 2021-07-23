@@ -1,9 +1,11 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {useQuery} from 'react-query'
 import {getCatalog} from "../api/ProductsAPI";
 import Box from "@material-ui/core/Box";
 import {Button, Container, makeStyles, Typography} from "@material-ui/core";
 import {Link} from "react-router-dom";
+import Slider from '@material-ui/core/Slider';
+import Switch from '@material-ui/core/Switch';
 
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -24,6 +26,9 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'space-between',
         height: '100%'
     },
+    slider:{
+        width: 300,
+    },
     media: {
         height: 140,
     },
@@ -34,20 +39,78 @@ const useStyles = makeStyles((theme) => ({
     }
 
 }));
+
+function valuetext(value) {
+    return `${value}`;
+}
+
 const theme = {
     spacing: 10,
 }
 
 export function CatalogPage() {
 
+    const [price, setPrice] = useState([0, 100]);
+    const [rating, setRating] = useState([0, 100]);
     const classes = useStyles();
+    const [list, setList] = useState(null);
 
+
+    const [isNewVal, setIsNewVal] = useState(false)
+    const [isSaleVal, setIsSaleVal] = useState(false)
+    const [isStockVal, setIsStockVal] = useState(false)
 
     const {data, error, isLoading} = useQuery('catalog', async () => {
         const {data} = await getCatalog()
+        setList(data)
         return data;
     });
 
+    const handleChangeSliderPrice = (event, newValue) => {
+        setPrice(newValue);
+        const min = price[0]
+        const max =price[1]
+        const newList = list.filter((el) =>{
+           return el.price >= min && el.price <= max
+        })
+        setList(newList);
+    };
+
+    const handleChangeSliderRating = (event, newValue) => {
+        setRating(newValue);
+        const min = rating[0]
+        const max =rating[1]
+        const newList = list.filter((el) =>{
+            return el.price >= min && el.price <= max
+        })
+        setList(newList);
+    };
+    const handleChangeNew = () => {
+        setIsNewVal(!isNewVal);
+        const newList = list.filter((el) =>{
+            return el.isNew === isNewVal
+        })
+        isNewVal ? setList(newList) : setList(data)
+
+    };
+    const handleChangeSale = () => {
+        setIsSaleVal(!isSaleVal);
+        const newList = list.filter((el) =>{
+            return el.isSale === isSaleVal
+        })
+        isSaleVal ? setList(newList) : setList(data)
+
+
+    };
+    const handleChangeStock = () => {
+        setIsStockVal(!isStockVal);
+        const newList = list.filter((el) =>{
+            return el.isInStock === isStockVal;
+        })
+        isStockVal ? setList(newList) : setList(data)
+
+
+    };
 
     return (
         <div className="page">
@@ -56,14 +119,57 @@ export function CatalogPage() {
                     : <div>
                         <Box mb={5}>
                             <Typography>Filters</Typography>
-                            <Box>Price</Box>
-                            <Box>Rating</Box>
-                            <Box>New</Box>
-                            <Box>Sale</Box>
-                            <Box>In Stock</Box>
+                            <Box mb={3}>
+                                <div className={classes.slider}>
+                                    <Typography id="range-slider" gutterBottom>
+                                        Price
+                                    </Typography>
+                                    <Slider
+                                        value={price}
+                                        onChange={handleChangeSliderPrice}
+                                        valueLabelDisplay="auto"
+                                        aria-labelledby="range-slider"
+                                        getAriaValueText={valuetext}
+                                    />
+                                </div>
+                            </Box>
+                            <Box><div className={classes.slider}>
+                                <Typography id="range-slider" gutterBottom>
+                                    Rating
+                                </Typography>
+                                <Slider
+                                    value={rating}
+                                    onChange={handleChangeSliderRating}
+                                    valueLabelDisplay="auto"
+                                    aria-labelledby="range-slider"
+                                    getAriaValueText={valuetext}
+                                />
+                            </div></Box>
+                            <Box>New
+                                <Switch
+                                    onChange={handleChangeNew}
+                                    color="primary"
+                                    name="Is New"
+                                    inputProps={{ 'aria-label': 'primary checkbox' }}
+                                />
+                            </Box>
+                            <Box>Sale
+                                <Switch
+                                    onChange={handleChangeSale}
+                                    color="primary"
+                                    name="Is New"
+                                    inputProps={{ 'aria-label': 'primary checkbox' }}
+                                /></Box>
+                            <Box>In Stock
+                                <Switch
+                                    onChange={handleChangeStock}
+                                    color="primary"
+                                    name="Is New"
+                                    inputProps={{ 'aria-label': 'primary checkbox' }}
+                                /></Box>
                         </Box>
                         <Container className={classes.postsContainer}>
-                            {data.map((post) => (
+                            {list && list.map((post) => (
                                 <Container className={classes.postContainer} key={post.id}>
                                     <Card className={classes.root}>
                                         <CardContent>

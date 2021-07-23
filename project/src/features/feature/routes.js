@@ -15,13 +15,13 @@ export const routes = [
         exact: true,
     },
     {
-        key: `${featureConf}/home`,
+        key: `${featureConf}/about-us`,
         path: '/about-us/',
         component: AboutUsPage,
         exact: true,
     },
     {
-        key: `${featureConf}/home`,
+        key: `${featureConf}/catalog`,
         path: '/catalog/',
         component: CatalogPage,
         exact: true,
@@ -33,13 +33,13 @@ export const routes = [
         exact: true,
     },
     {
-        key: `${featureConf}/home`,
+        key: `${featureConf}/delivery&prices`,
         path: '/delivery&price/',
         component: DeliveryAndPricePage,
         exact: true,
     },
     {
-        key: `${featureConf}/home`,
+        key: `${featureConf}/store`,
         path: '/cart',
         component: StorePage,
         exact: true,
